@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { logger } from './logger';
 
 const app = express();
-const port = 8080;
+const port = 3000;
 app.use(express.json());
 
 app.get('/', (_req: Request, res: Response) => {
