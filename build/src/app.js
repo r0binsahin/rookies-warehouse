@@ -29,8 +29,14 @@ app.get('/status', (_req, res) => {
 });
 app.post('/warehouse', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { car_id } = req.body;
-    if (!car_id)
-        return res.status(404).send('Error: bad request. No car_id found!');
+    const newCarId = car_id.trim();
+    if (!newCarId) {
+        res.status(404).send('Error: bad request. No car_id found!');
+        logger_1.logger.info({
+            level: 'info',
+            message: 'Error: bad request. No car_id found!',
+        });
+    }
     yield db_1.db
         .insert(schema_1.warehouse)
         .values({ car_id: car_id, status: `${car_id ? 'OK' : 'ERROR'}` })
@@ -38,7 +44,7 @@ app.post('/warehouse', (req, res) => __awaiter(void 0, void 0, void 0, function*
     res.status(200).json('Payment success');
     logger_1.logger.info({
         level: 'info',
-        message: 'Payment processed successfully',
+        message: 'Warehouse payment processed successfully',
         car_id,
     });
 }));
