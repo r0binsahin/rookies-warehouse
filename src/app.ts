@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import { logger } from './logger';
+import { db } from '../server/db';
+import { warehouse } from '../server/db/schema';
 
 const app = express();
 const port = 3000;
@@ -17,36 +19,22 @@ app.get('/status', (_req: Request, res: Response) => {
   logger.info('Status page!');
 });
 
-app.post('/payments', (req: Request, res: Response) => {
-  const { carId, amount } = req.body;
-  console.log(carId);
-  console.log(amount);
+app.post('/warehouse', async (req: Request, res: Response) => {
+  const { car_id } = req.body;
 
-  if (typeof amount !== 'number' || !Number.isInteger(amount)) {
-    logger.log({
-      message: 'Invalid amount. It must be an integer.',
-      level: 'error',
-    });
-    return res
-      .status(400)
-      .json({ error: 'Invalid amount. It must be an integer.' });
-  }
+  if (!car_id)
+    return res.status(404).send('Error: bad request. No car_id found!');
 
-  const random = Math.random();
-
-  if (random > 0.5) {
-    logger.log({
-      message: 'Invalid random. It must be less than 0.5.',
-      level: 'error',
-    });
-  }
+  await db
+    .insert(warehouse)
+    .values({ car_id: car_id, status: `${car_id ? 'OK' : 'ERROR'}` })
+    .returning();
 
   res.status(200).json('Payment success');
   logger.info({
     level: 'info',
     message: 'Payment processed successfully',
-    carId,
-    amount,
+    car_id,
   });
 });
 

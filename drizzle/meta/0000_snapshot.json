@@ -1,11 +1,11 @@
 {
-  "id": "0c0b6024-dbbf-409b-8074-ca1edde82611",
+  "id": "f9bd83d5-335f-4439-b072-7b3d33285c7a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.car": {
-      "name": "car",
+    "public.warehouse": {
+      "name": "warehouse",
       "schema": "",
       "columns": {
         "id": {
@@ -14,17 +14,17 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "varchar(256)",
+        "status": {
+          "name": "status",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "amount": {
-          "name": "amount",
-          "type": "integer",
+        "car_id": {
+          "name": "car_id",
+          "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},

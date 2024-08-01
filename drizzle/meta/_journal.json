@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1722426782287,
-      "tag": "0000_numerous_pyro",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1722433708452,
-      "tag": "0001_married_mauler",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1722434254166,
-      "tag": "0002_violet_ultimatum",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1722435391103,
-      "tag": "0003_rapid_obadiah_stane",
+      "when": 1722515470733,
+      "tag": "0000_curly_zodiak",
       "breakpoints": true
     }
   ]
