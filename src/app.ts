@@ -22,8 +22,15 @@ app.get('/status', (_req: Request, res: Response) => {
 app.post('/warehouse', async (req: Request, res: Response) => {
   const { car_id } = req.body;
 
-  if (!car_id)
-    return res.status(404).send('Error: bad request. No car_id found!');
+  const newCarId = car_id.trim();
+
+  if (!newCarId) {
+    res.status(404).send('Error: bad request. No car_id found!');
+    logger.info({
+      level: 'info',
+      message: 'Error: bad request. No car_id found!',
+    });
+  }
 
   await db
     .insert(warehouse)
@@ -33,7 +40,7 @@ app.post('/warehouse', async (req: Request, res: Response) => {
   res.status(200).json('Payment success');
   logger.info({
     level: 'info',
-    message: 'Payment processed successfully',
+    message: 'Warehouse payment processed successfully',
     car_id,
   });
 });
