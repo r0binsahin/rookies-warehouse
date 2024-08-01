@@ -4,7 +4,7 @@ import { db } from '../server/db';
 import { warehouse } from '../server/db/schema';
 
 const app = express();
-const port = 3000;
+const port = 8080;
 app.use(express.json());
 
 app.get('/', (_req: Request, res: Response) => {

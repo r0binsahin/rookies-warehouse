@@ -17,7 +17,7 @@ const logger_1 = require("./logger");
 const db_1 = require("../server/db");
 const schema_1 = require("../server/db/schema");
 const app = (0, express_1.default)();
-const port = 3000;
+const port = 8080;
 app.use(express_1.default.json());
 app.get('/', (_req, res) => {
     res.status(200).send('Hello from Index1');
