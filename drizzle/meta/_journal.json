@@ -22,6 +22,13 @@
       "when": 1722434254166,
       "tag": "0002_violet_ultimatum",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1722435391103,
+      "tag": "0003_rapid_obadiah_stane",
+      "breakpoints": true
     }
   ]
 }
