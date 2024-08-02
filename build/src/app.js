@@ -41,7 +41,7 @@ app.post("/warehouse", (req, res) => __awaiter(void 0, void 0, void 0, function*
     const filteredResult = yield db_1.db
         .select()
         .from(schema_1.warehouse)
-        .where((0, drizzle_orm_1.eq)(car_id, newCarId));
+        .where((0, drizzle_orm_1.eq)(schema_1.warehouse.car_id, newCarId));
     if (filteredResult.length === 0) {
         res.status(404).send("Error: car_id not found in warehouse!");
         logger_1.logger.info({
@@ -62,7 +62,7 @@ app.post("/warehouse", (req, res) => __awaiter(void 0, void 0, void 0, function*
     yield db_1.db
         .update(schema_1.warehouse)
         .set({ status: "SOLD" })
-        .where((0, drizzle_orm_1.eq)(car_id, newCarId))
+        .where((0, drizzle_orm_1.eq)(schema_1.warehouse.car_id, newCarId))
         .returning();
     res.status(200).json("Payment success and it's sold.");
     logger_1.logger.info({
