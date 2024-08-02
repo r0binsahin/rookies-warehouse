@@ -1,46 +1,57 @@
-import express, { Request, Response } from 'express';
-import { logger } from './logger';
-import { db } from '../server/db';
-import { warehouse } from '../server/db/schema';
+import express, { Request, Response } from "express";
+import { logger } from "./logger";
+import { db } from "../server/db";
+import { warehouse } from "../server/db/schema";
+import { eq } from "drizzle-orm";
 
 const app = express();
 const port = 8080;
 app.use(express.json());
 
-app.get('/', (_req: Request, res: Response) => {
-  res.status(200).send('Hello from Index1');
+app.get("/", (_req: Request, res: Response) => {
+  res.status(200).send("Hello from Index1");
 
-  logger.info('Index page!');
+  logger.info("Index page!");
 });
 
-app.get('/status', (_req: Request, res: Response) => {
-  res.status(200).send('Hello from Rookies');
+app.get("/status", (_req: Request, res: Response) => {
+  res.status(200).send("Hello from Rookies");
 
-  logger.info('Status page!');
+  logger.info("Status page!");
 });
 
-app.post('/warehouse', async (req: Request, res: Response) => {
+app.post("/warehouse", async (req: Request, res: Response) => {
   const { car_id } = req.body;
 
   const newCarId = car_id.trim();
 
   if (!newCarId) {
-    res.status(404).send('Error: bad request. No car_id found!');
+    res.status(404).send("Error: bad request. No car_id found!");
     logger.info({
-      level: 'info',
-      message: 'Error: bad request. No car_id found!',
+      level: "info",
+      message: "Error: bad request. No car_id found!",
     });
   }
 
+  const filteredResult = await db
+    .select()
+    .from(warehouse)
+    .where(eq(newCarId, car_id));
+
+  if (filteredResult[0].status === "SOLD") {
+    return res.status(400).send("Car is not available.");
+  }
+
   await db
-    .insert(warehouse)
-    .values({ car_id: car_id, status: `${car_id ? 'OK' : 'ERROR'}` })
+    .update(warehouse)
+    .set({ status: "SOLD" })
+    .where(eq(newCarId, car_id))
     .returning();
 
-  res.status(200).json('Payment success');
+  res.status(200).json("Payment success and it's sold.");
   logger.info({
-    level: 'info',
-    message: 'Warehouse payment processed successfully',
+    level: "info",
+    message: "Warehouse payment processed successfully",
     car_id,
   });
 });
