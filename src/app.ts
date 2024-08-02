@@ -36,16 +36,31 @@ app.post("/warehouse", async (req: Request, res: Response) => {
   const filteredResult = await db
     .select()
     .from(warehouse)
-    .where(eq(newCarId, car_id));
+    .where(eq(car_id, newCarId));
+
+  if (filteredResult.length === 0) {
+    res.status(404).send("Error: car_id not found in warehouse!");
+    logger.info({
+      level: "info",
+      message: "Error: car_id not found in warehouse!",
+    });
+    return;
+  }
 
   if (filteredResult[0].status === "SOLD") {
-    return res.status(400).send("Car is not available.");
+    res.status(400).send("Car is not available.");
+    logger.info({
+      level: "info",
+      message: "Car is not available.",
+      car_id,
+    });
+    return;
   }
 
   await db
     .update(warehouse)
     .set({ status: "SOLD" })
-    .where(eq(newCarId, car_id))
+    .where(eq(car_id, newCarId))
     .returning();
 
   res.status(200).json("Payment success and it's sold.");
